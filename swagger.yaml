@@ -1,10 +1,15 @@
 openapi: 3.0.0
 info:
-  title: Pricing API
+  title: Product query API for the CAPITOLE application process
   version: 1.0.0
+tags:
+  - name: Product
+    description: Operations related to products
 paths:
   /product/price:
     get:
+      tags:
+        - Product
       summary: Get applicable price for a product
       parameters:
         - name: applicationDate

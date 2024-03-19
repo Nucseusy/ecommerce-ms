@@ -41,6 +41,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PriceResponse'
+        '400':
+          description: Bad request (invalid or missing parameters)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: Price not found for the given parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
 components:
   schemas:
     PriceResponse:
@@ -70,6 +82,26 @@ components:
           example: 4
         finalPrice:
           type: number
-          format: float
+          format: double
           description: 'Final sale price.'
           example: 22.34
+    ApiErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: 'Date and time of the error'
+          example: '2024-01-01 11:22:33'
+        status:
+          type: integer
+          description: 'HTTP status code of the error'
+        error:
+          type: string
+          description: 'Short error message'
+        message:
+          type: string
+          description: 'Mensaje detallado del error'
+        path:
+          type: string
+          description: 'Path of the request that generated the error'

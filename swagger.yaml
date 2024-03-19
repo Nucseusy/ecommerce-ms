@@ -3,7 +3,7 @@ info:
   title: Pricing API
   version: 1.0.0
 paths:
-  /prices:
+  /product/price:
     get:
       summary: Get applicable price for a product
       parameters:

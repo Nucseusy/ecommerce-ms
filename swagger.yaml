@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: Pricing API
+  version: 1.0.0
+paths:
+  /prices:
+    get:
+      summary: Get applicable price for a product
+      parameters:
+        - name: applicationDate
+          in: query
+          required: true
+          description: 'The date on which the tariff price for the product becomes effective or applicable. Format yyyy-MM-dd HH:mm:ss'
+          schema:
+            type: string
+            format: date-time
+            example: '2024-01-01 00:00:01'
+        - name: productId
+          in: query
+          required: true
+          description: 'Unique code or identifier assigned to a specific product.'
+          schema:
+            type: integer
+            example: 1
+        - name: brandId
+          in: query
+          required: true
+          description: 'Identifier used to denote a brand to which a product.'
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponse'
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      properties:
+        productId:
+          type: integer
+          description: 'Unique code or identifier assigned to a specific product.'
+          example: 1
+        brandId:
+          type: integer
+          description: 'Identifier used to denote a brand to which a product.'
+          example: 1
+        startApplicationDate:
+          type: string
+          format: date-time
+          description: 'Date on which the indicated rate price applies.  Format yyyy-MM-dd HH:mm:ss'
+          example: '2024-01-01 00:00:01'
+        endApplicationDate:
+          type: string
+          format: date-time
+          description: 'Date on which the indicated rate price ends. Format yyyy-MM-dd HH:mm:ss'
+          example: '2024-01-01 11:22:33'
+        priceList:
+          type: number
+          description: 'Identifier of the applicable price rate.'
+          example: 4
+        finalPrice:
+          type: number
+          format: float
+          description: 'Final sale price.'
+          example: 22.34

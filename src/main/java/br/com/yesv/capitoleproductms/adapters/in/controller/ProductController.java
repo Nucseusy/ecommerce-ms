@@ -3,12 +3,17 @@ package br.com.yesv.capitoleproductms.adapters.in.controller;
 import br.com.yesv.capitoleproductms.adapters.in.controller.common.Constants;
 import br.com.yesv.capitoleproductms.adapters.in.controller.dto.PriceResponse;
 import br.com.yesv.capitoleproductms.adapters.in.controller.exception.ApiErrorResponse;
+import br.com.yesv.capitoleproductms.adapters.in.controller.exception.ResourceNotFoundException;
+import br.com.yesv.capitoleproductms.adapters.in.controller.mapper.PriceResponseMapper;
+import br.com.yesv.capitoleproductms.domain.ports.in.FindPriceInputPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +21,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/product")
 @Tag(name = "Product", description = "Operations related to products")
+@Slf4j
 public class ProductController {
+
+    private final FindPriceInputPort findPriceInputPort;
+    private final PriceResponseMapper priceResponseMapper;
 
     @GetMapping("/price")
     @Operation(summary = "Get Price", description = "Get applicable price for a product",
@@ -42,13 +53,11 @@ public class ProductController {
     public PriceResponse getPriceByParams(@RequestParam Integer productId,
                                           @RequestParam Integer brandId,
                                           @RequestParam @DateTimeFormat(pattern = Constants.DATE_TIME_FORMAT) LocalDateTime applicationDate) {
-        return PriceResponse.builder()
-                .productId(1)
-                .brandId(1)
-                .startApplicationDate(LocalDateTime.now())
-                .endApplicationDate(LocalDateTime.now())
-                .priceList(1)
-                .finalPrice(22.4D)
-                .build();
+        log.info("Initiating price query for ProductId: {}, BrandId: {}, ApplicationDate: {}", productId, brandId, applicationDate);
+        var response = findPriceInputPort.find(productId, brandId, applicationDate);
+        log.info("Response successfully retrieved from the query: {}", response);
+        if (Objects.isNull(response))
+            throw new ResourceNotFoundException("Price not found for the given parameters");
+        return priceResponseMapper.toPriceResponse(response);
     }
 }

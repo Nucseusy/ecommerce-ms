@@ -1,6 +1,5 @@
 package br.com.yesv.capitoleproductms.adapters.out.repository.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,15 +12,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "PRICE_LIST")
-public class PriceList implements Serializable {
+@Table(name = "PRODUCT")
+public class ProductEntity implements Serializable {
+
     @Serial
-    private static final long serialVersionUID = 7095968899237072035L;
+    private static final long serialVersionUID = -7329698581053964595L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private int id;
+    @Column(name = "PRODUCT_ID")
+    private int productId;
 
     @Column(name = "NAME")
     private String name;

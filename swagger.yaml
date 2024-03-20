@@ -1,7 +1,8 @@
 openapi: 3.0.0
 info:
-  title: Product query API for the CAPITOLE application process
+  title: capitole-product-ms
   version: 1.0.0
+  description: 'Product query API for the CAPITOLE application process'
 tags:
   - name: Product
     description: Operations related to products
@@ -98,10 +99,10 @@ components:
           description: 'HTTP status code of the error'
         error:
           type: string
-          description: 'Short error message'
+          description: 'Detailed error description'
         message:
           type: string
-          description: 'Mensaje detallado del error'
+          description: 'Short error message'
         path:
           type: string
           description: 'Path of the request that generated the error'

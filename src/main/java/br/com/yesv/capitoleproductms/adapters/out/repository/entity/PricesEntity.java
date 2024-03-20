@@ -17,12 +17,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "PRICES")
-public class Prices implements Serializable {
+public class PricesEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = -1970151226331926284L;
 
     @EmbeddedId
-    private PricesPK pk;
+    private PricesPKEntity pk;
 
     @Column(name = "START_DATE")
     private LocalDateTime startDate;

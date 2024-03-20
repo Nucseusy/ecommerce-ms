@@ -14,24 +14,24 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class PricesPK implements Serializable {
+public class PricesPKEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "BRAND_ID")
-    private Brand brand;
+    private BrandEntity brand;
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
-    private Product product;
+    private ProductEntity product;
 
     @ManyToOne
     @JoinColumn(name = "PRICE_LIST")
-    private PriceList priceList;
+    private PriceListEntity priceList;
 
     @Column(name = "PRIORITY")
     private Integer priority;
 
     @ManyToOne
     @JoinColumn(name = "CURR")
-    private Currency currency;
+    private CurrencyEntity currency;
 
 }

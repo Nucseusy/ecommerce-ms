@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "CURRENCY")
-public class Currency implements Serializable {
+public class CurrencyEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = -8999684259198101589L;
 

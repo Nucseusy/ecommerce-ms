@@ -72,7 +72,7 @@ class ProductControllerTest {
                 .endApplicationDate(LocalDateTime.of(2020, 12, 31, 23, 59, 59))
                 .priceList(1)
                 .currency("EUR")
-                .finalPrice(35.5)
+                .finalPrice(25.45)
                 .build());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/product/price")
@@ -86,7 +86,7 @@ class ProductControllerTest {
                         "'startApplicationDate': '2020-06-14 00:00:00'," +
                         "'endApplicationDate': '2020-12-31 23:59:59'," +
                         "'priceList': 1," +
-                        "'finalPrice': 35.50" +
+                        "'finalPrice': 25.45" +
                         "}"));
     }
 
@@ -157,7 +157,7 @@ class ProductControllerTest {
                 .build());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/product/price")
-                        .param("applicationDate", "2023-06-16 21:00:00")
+                        .param("applicationDate", "2020-06-16 21:00:00")
                         .param("productId", "35455")
                         .param("brandId", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

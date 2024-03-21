@@ -24,9 +24,14 @@ El proyecto está configurado para levantar de forma sencilla y directa. Al ejec
 ## Documentación
 Para ver a detalle la documentación de la API generada por Swagger, utilizar el siguiente link: http://localhost:8080/swagger-ui/index.html#/
 
-## Pruebas
+## Tests
+### Usando Postman
 Para facilitar la validación del endpoint de consulta, se incluye el siguiente comando curl, diseñado para simular una solicitud de consulta de precios
 
 ```
 curl --location 'http://localhost:8080/product/price?productId=35455&brandId=1&applicationDate=2020-06-15%2010%3A00%3A00'
 ```
+### Tests de integración
+Se encuentran en la clase de test ProductControllerTest.java
+
+

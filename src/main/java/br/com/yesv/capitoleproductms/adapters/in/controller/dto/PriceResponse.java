@@ -2,6 +2,7 @@ package br.com.yesv.capitoleproductms.adapters.in.controller.dto;
 
 import br.com.yesv.capitoleproductms.adapters.in.controller.common.serialization.LocalDateTimeDeserializer;
 import br.com.yesv.capitoleproductms.adapters.in.controller.common.serialization.LocalDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,5 +39,6 @@ public class PriceResponse {
     private Integer priceList;
 
     @Schema(description = "Final sale price.", example = "22.34")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "#0.00")
     private Double finalPrice;
 }

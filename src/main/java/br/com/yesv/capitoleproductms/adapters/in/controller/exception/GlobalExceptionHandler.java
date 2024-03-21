@@ -13,19 +13,18 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class})
-    private ResponseEntity<ApiErrorResponse> handleBadRequest(RuntimeException ex, WebRequest request) {
+    public ResponseEntity<ApiErrorResponse> handleBadRequest(RuntimeException ex, WebRequest request) {
         return buildResponse(ex.getMessage(), HttpStatus.BAD_REQUEST, ((ServletWebRequest) request).getRequest());
 
     }
 
     @ExceptionHandler(value = {ResourceNotFoundException.class})
-    private ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException ex, WebRequest request) {
+    public ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException ex, WebRequest request) {
         return buildResponse(ex.getMessage(), HttpStatus.NOT_FOUND, ((ServletWebRequest) request).getRequest());
     }
 
@@ -47,7 +46,7 @@ public class GlobalExceptionHandler {
         var errors = constraintViolationException.getConstraintViolations()
                 .stream()
                 .map(ConstraintViolation::getMessage)
-                .collect(Collectors.toList());
+                .toList();
 
         return buildResponse(String.join(", ", errors), HttpStatus.BAD_REQUEST, ((ServletWebRequest) request).getRequest());
 

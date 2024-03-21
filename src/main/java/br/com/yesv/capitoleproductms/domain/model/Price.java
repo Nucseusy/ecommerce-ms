@@ -87,6 +87,66 @@ public class Price {
         this.finalPrice = finalPrice;
     }
 
+    public static PriceBuilder builder() {
+        return new PriceBuilder();
+    }
+
+    public static class PriceBuilder {
+        private Integer productId;
+
+        private Integer brandId;
+
+        private LocalDateTime startApplicationDate;
+
+        private LocalDateTime endApplicationDate;
+
+        private Integer priceList;
+
+        private String currency;
+
+        private Double finalPrice;
+
+        public Price.PriceBuilder productId(Integer productId) {
+            this.productId = productId;
+            return this;
+        }
+
+        public Price.PriceBuilder brandId(Integer brandId) {
+            this.brandId = brandId;
+            return this;
+        }
+
+        public Price.PriceBuilder startApplicationDate(LocalDateTime startApplicationDate) {
+            this.startApplicationDate = startApplicationDate;
+            return this;
+        }
+
+        public Price.PriceBuilder endApplicationDate(LocalDateTime endApplicationDate) {
+            this.endApplicationDate = endApplicationDate;
+            return this;
+        }
+
+        public Price.PriceBuilder priceList(Integer priceList) {
+            this.priceList = priceList;
+            return this;
+        }
+
+        public Price.PriceBuilder currency(String currency) {
+            this.currency = currency;
+            return this;
+        }
+
+        public Price.PriceBuilder finalPrice(Double finalPrice) {
+            this.finalPrice = finalPrice;
+            return this;
+        }
+
+
+        public Price build() {
+            return new Price(productId, brandId, startApplicationDate, endApplicationDate, priceList, currency, finalPrice);
+        }
+
+    }
     @Override
     public String toString() {
         return "Price{" +

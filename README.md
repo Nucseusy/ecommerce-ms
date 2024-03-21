@@ -1,5 +1,5 @@
 
-# Product MS
+# Ecommerce MS
 
 ## Descripción
 Trata de un microservicio diseñado para gestionar la consulta de precios de productos en una tienda de comercio electrónico. Permite a los usuarios consultar precios según la fecha, el producto y la marca, ofreciendo siempre el precio más adecuado según las reglas de negocio establecidas. La solución propuesta ha sido cuidadosamente diseñada e implementada priorizando la claridad y la eficiencia del desarrollo, asegurando que se aborden de manera precisa y efectiva los requisitos específicos delineados en la descripción del test. Se ha puesto especial énfasis en la simplicidad y la legibilidad del código, facilitando así tanto la comprensión como la extensión futura del proyecto.

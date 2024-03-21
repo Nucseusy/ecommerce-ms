@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: capitole-product-ms
+  title: ecommerce-ms
   version: 1.0.0
   description: 'Product query API for the CAPITOLE application process'
 tags:

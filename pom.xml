@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.com.yesv</groupId>
-    <artifactId>capitole-product-ms</artifactId>
+    <artifactId>ecommerce-ms</artifactId>
     <version>1.0.0</version>
-    <name>capitole-product-ms</name>
+    <name>ecommerce-ms</name>
     <description>Price query API for the CAPITOLE application process</description>
     <properties>
         <java.version>17</java.version>

@@ -2,7 +2,7 @@ app:
   version: @project.version@
 spring:
   application:
-    name: capitole-product-ms
+    name: ecommerce-ms
   datasource:
     url: jdbc:h2:mem:ecommerce_db
     driver-class-name: org.h2.Driver

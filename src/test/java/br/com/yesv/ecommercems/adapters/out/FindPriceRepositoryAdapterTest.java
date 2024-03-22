@@ -35,15 +35,15 @@ class FindPriceRepositoryAdapterTest {
 
     @Test
     void testFind() {
-        BrandEntity brand = new BrandEntity();
+        var brand = new BrandEntity();
         brand.setBrandId(1);
         brand.setName("brand");
 
-        CurrencyEntity currency = new CurrencyEntity();
+        var currency = new CurrencyEntity();
         currency.setCurrencyId("EUR");
         currency.setName("currency");
 
-        PriceListEntity priceList = new PriceListEntity();
+        var priceList = new PriceListEntity();
         priceList.setId(1);
         priceList.setName("priceList");
 
@@ -51,39 +51,41 @@ class FindPriceRepositoryAdapterTest {
         product.setProductId(1);
         product.setName("product");
 
-        PricesPKEntity pk = new PricesPKEntity();
+        var pk = new PricesPKEntity();
         pk.setBrand(brand);
         pk.setCurrency(currency);
         pk.setPriceList(priceList);
         pk.setPriority(1);
         pk.setProduct(product);
 
-        PricesEntity pricesEntity = new PricesEntity();
+        var pricesEntity = new PricesEntity();
         pricesEntity.setEndDate(LocalDate.of(2020, 1, 1).atStartOfDay());
         pricesEntity.setPk(pk);
         pricesEntity.setPrice(10.0d);
         pricesEntity.setStartDate(LocalDate.of(2020, 1, 1).atStartOfDay());
-        Optional<PricesEntity> ofResult = Optional.of(pricesEntity);
+
+        var ofResult = Optional.of(pricesEntity);
         when(priceRepository
                 .findTop1ByPk_ProductProductIdAndPk_BrandBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPk_PriorityDesc(
                         anyInt(), anyInt(), any(), any()))
                 .thenReturn(ofResult);
-        Price.PriceBuilder currencyResult = Price.builder().brandId(1).currency("EUR");
-        Price.PriceBuilder productIdResult = currencyResult.endApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay())
+        var currencyResult = Price.builder().brandId(1).currency("EUR");
+
+        var productIdResult = currencyResult.endApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay())
                 .finalPrice(10.0d)
                 .priceList(1)
                 .productId(1);
-        Price buildResult = productIdResult.startApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay()).build();
+        var buildResult = productIdResult.startApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay()).build();
         when(priceEntityMapper.toPrice(any())).thenReturn(buildResult);
 
-        Price actualFindResult = findPriceRepositoryAdapter.find(1, 1, LocalDate.of(2020, 1, 1).atStartOfDay());
+        var actualFindResult = findPriceRepositoryAdapter.find(1, 1, LocalDate.of(2020, 1, 1).atStartOfDay());
 
         verify(priceRepository)
                 .findTop1ByPk_ProductProductIdAndPk_BrandBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPk_PriorityDesc(
                         anyInt(), anyInt(), any(), any());
         verify(priceEntityMapper).toPrice(any());
-        LocalTime expectedToLocalTimeResult = actualFindResult.getStartApplicationDate().toLocalTime();
-        assertSame(expectedToLocalTimeResult, actualFindResult.getEndApplicationDate().toLocalTime());
+        LocalTime expectedToLocalTimeResult = actualFindResult.get().getStartApplicationDate().toLocalTime();
+        assertSame(expectedToLocalTimeResult, actualFindResult.get().getEndApplicationDate().toLocalTime());
     }
 
 }

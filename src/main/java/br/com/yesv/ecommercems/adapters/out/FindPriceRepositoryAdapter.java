@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Component
@@ -21,11 +23,13 @@ public class FindPriceRepositoryAdapter implements FindPriceOutputPort {
         this.priceEntityMapper = priceEntityMapper;
     }
 
-    public Price find(Integer productId, Integer brandId, LocalDateTime applicationDate) {
+    public Optional<Price> find(Integer productId, Integer brandId, LocalDateTime applicationDate) {
         log.info("Searching for price in the database for ProductId: {}, BrandId: {}, ApplicationDate: {}", productId, brandId, applicationDate);
-        var price = priceRepository.findTop1ByPk_ProductProductIdAndPk_BrandBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPk_PriorityDesc(productId, brandId, applicationDate, applicationDate);
-        log.info("Database result: {}", price);
+        var price = priceRepository.findTop1ByPk_ProductProductIdAndPk_BrandBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPk_PriorityDesc(productId, brandId, applicationDate, applicationDate)
+                .map(priceEntityMapper::toPrice);
 
-        return price.isPresent() ? priceEntityMapper.toPrice(price.get()) : null;
+        log.info("Database result: {}", price.map(Objects::toString).orElse("Price not found in the database"));
+
+        return price;
     }
 }

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,10 +53,13 @@ public class ProductController {
                                           @RequestParam Integer brandId,
                                           @RequestParam @DateTimeFormat(pattern = Constants.DATE_TIME_FORMAT) LocalDateTime applicationDate) {
         log.info("Initiating price query for ProductId: {}, BrandId: {}, ApplicationDate: {}", productId, brandId, applicationDate);
-        var response = findPriceInputPort.find(productId, brandId, applicationDate);
+
+        var response = findPriceInputPort.find(productId, brandId, applicationDate)
+                .map(priceResponseMapper::toPriceResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("Price not found for the given parameters"));
+
         log.info("Response successfully retrieved from the query: {}", response);
-        if (Objects.isNull(response))
-            throw new ResourceNotFoundException("Price not found for the given parameters");
-        return priceResponseMapper.toPriceResponse(response);
+
+        return response;
     }
 }

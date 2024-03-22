@@ -5,6 +5,7 @@ import br.com.yesv.ecommercems.domain.ports.in.FindPriceInputPort;
 import br.com.yesv.ecommercems.domain.ports.out.FindPriceOutputPort;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 
 public class FindPriceUseCase implements FindPriceInputPort {
@@ -14,7 +15,7 @@ public class FindPriceUseCase implements FindPriceInputPort {
         this.findPriceOutputPort = findPriceOutputPort;
     }
 
-    public Price find(Integer productId, Integer brandId, LocalDateTime applicationDate) {
+    public Optional<Price> find(Integer productId, Integer brandId, LocalDateTime applicationDate) {
         return findPriceOutputPort.find(productId, brandId, applicationDate);
     }
 }

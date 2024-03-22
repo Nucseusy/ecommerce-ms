@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,19 +30,19 @@ class FindPriceUseCaseTest {
 
     @Test
     void testFind() {
-        Price.PriceBuilder currencyResult = Price.builder().brandId(1).currency("EUR");
-        Price.PriceBuilder productIdResult = currencyResult.endApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay())
+        var currencyResult = Price.builder().brandId(1).currency("EUR");
+        var productIdResult = currencyResult.endApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay())
                 .finalPrice(10.0d)
                 .priceList(1)
                 .productId(1);
-        Price buildResult = productIdResult.startApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay()).build();
+        var buildResult = productIdResult.startApplicationDate(LocalDate.of(2020, 1, 1).atStartOfDay()).build();
         when(findPriceOutputPort.find(anyInt(), anyInt(), any()))
-                .thenReturn(buildResult);
+                .thenReturn(Optional.of(buildResult));
 
-        Price actualFindResult = findPriceUseCase.find(1, 1, LocalDate.of(2020, 1, 1).atStartOfDay());
+        var actualFindResult = findPriceUseCase.find(1, 1, LocalDate.of(2020, 1, 1).atStartOfDay());
 
         verify(findPriceOutputPort).find(anyInt(), anyInt(), any());
-        LocalTime expectedToLocalTimeResult = actualFindResult.getStartApplicationDate().toLocalTime();
-        assertSame(expectedToLocalTimeResult, actualFindResult.getEndApplicationDate().toLocalTime());
+        LocalTime expectedToLocalTimeResult = actualFindResult.get().getStartApplicationDate().toLocalTime();
+        assertSame(expectedToLocalTimeResult, actualFindResult.get().getEndApplicationDate().toLocalTime());
     }
 }

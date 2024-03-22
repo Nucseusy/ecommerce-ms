@@ -7,7 +7,6 @@ import jakarta.validation.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,15 +28,15 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testHandleBadRequest() {
-        RuntimeException ex = new RuntimeException("test");
-        HttpServletRequest request = mock(HttpServletRequest.class);
+        var ex = new RuntimeException("test");
+        var request = mock(HttpServletRequest.class);
         when(request.getRequestURI()).thenReturn("https://example.org/example");
 
-        ResponseEntity<ApiErrorResponse> actualHandleBadRequestResult = globalExceptionHandler.handleBadRequest(ex,
+        var actualHandleBadRequestResult = globalExceptionHandler.handleBadRequest(ex,
                 new ServletWebRequest(request));
 
         verify(request).getRequestURI();
-        ApiErrorResponse body = actualHandleBadRequestResult.getBody();
+        var body = actualHandleBadRequestResult.getBody();
         assertEquals("BAD_REQUEST", body.getMessage());
         assertEquals("test", body.getError());
         assertEquals("https://example.org/example", body.getPath());
@@ -49,15 +48,15 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testHandleException() {
-        Exception exception = new Exception("test");
-        HttpServletRequest request = mock(HttpServletRequest.class);
+        var exception = new Exception("test");
+        var request = mock(HttpServletRequest.class);
         when(request.getRequestURI()).thenReturn("https://example.org/example");
 
-        ResponseEntity<ApiErrorResponse> actualHandleExceptionResult = globalExceptionHandler.handleException(exception,
+        var actualHandleExceptionResult = globalExceptionHandler.handleException(exception,
                 new ServletWebRequest(request));
 
         verify(request).getRequestURI();
-        ApiErrorResponse body = actualHandleExceptionResult.getBody();
+        var body = actualHandleExceptionResult.getBody();
         assertEquals("INTERNAL_SERVER_ERROR", body.getMessage());
         assertEquals("MessageError: testDetail: ", body.getError());
         assertEquals("https://example.org/example", body.getPath());
@@ -70,21 +69,21 @@ class GlobalExceptionHandlerTest {
     @Test
     void testHandleConstraintViolationException() {
 
-        ConstraintViolation<Object> constraintViolation = mock(ConstraintViolation.class);
+        var constraintViolation = mock(ConstraintViolation.class);
         when(constraintViolation.getPropertyPath()).thenReturn(mock(Path.class));
         when(constraintViolation.getMessage()).thenReturn("Not all who wander are lost");
 
         HashSet<ConstraintViolation<?>> constraintViolations = new HashSet<>();
         constraintViolations.add(constraintViolation);
-        ConstraintViolationException constraintViolationException = new ConstraintViolationException(constraintViolations);
+        var constraintViolationException = new ConstraintViolationException(constraintViolations);
 
-        ResponseEntity<ApiErrorResponse> actualHandleConstraintViolationExceptionResult = globalExceptionHandler
+        var actualHandleConstraintViolationExceptionResult = globalExceptionHandler
                 .handleConstraintViolationException(constraintViolationException,
                         new ServletWebRequest(new MockHttpServletRequest()));
 
         verify(constraintViolation, atLeast(1)).getMessage();
         verify(constraintViolation).getPropertyPath();
-        ApiErrorResponse body = actualHandleConstraintViolationExceptionResult.getBody();
+        var body = actualHandleConstraintViolationExceptionResult.getBody();
         assertEquals("", body.getPath());
         assertEquals("BAD_REQUEST", body.getMessage());
         assertEquals("Not all who wander are lost", body.getError());
@@ -101,10 +100,10 @@ class GlobalExceptionHandlerTest {
         MethodArgumentTypeMismatchException exception = new MethodArgumentTypeMismatchException("Value", requiredType,
                 "0123456789ABCDEF", null, new Throwable());
 
-        ResponseEntity<ApiErrorResponse> actualHandleMethodArgumentTypeMismatchExceptionResult = globalExceptionHandler
+        var actualHandleMethodArgumentTypeMismatchExceptionResult = globalExceptionHandler
                 .handleMethodArgumentTypeMismatchException(exception, new ServletWebRequest(new MockHttpServletRequest()));
 
-        ApiErrorResponse body = actualHandleMethodArgumentTypeMismatchExceptionResult.getBody();
+        var body = actualHandleMethodArgumentTypeMismatchExceptionResult.getBody();
         assertEquals("", body.getPath());
         assertEquals("'0123456789ABCDEF': The format of the field value is invalid.", body.getError());
         assertEquals("BAD_REQUEST", body.getMessage());
